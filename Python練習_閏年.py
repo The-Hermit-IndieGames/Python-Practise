@@ -30,13 +30,22 @@ def is_leap_year(year):
 #開始   
 print('歡迎使用閏年判斷\n')
 
+continue_bool = True
+while (continue_bool):
 
-#資料輸入
-year = get_int_input("請輸西元年份(整數): ")
+    #資料輸入
+    year = get_int_input("\n請輸西元年份(整數): ")
 
 
-#判斷
-if is_leap_year(year):
-        print(f"{year} 年是閏年。")
-else:
-        print(f"{year} 年不是閏年。")
+    #判斷
+    if is_leap_year(year):
+        print(f"{year} 年是閏年。\n")
+    else:
+        print(f"{year} 年不是閏年。\n")
+
+    if input("如需繼續使用，請輸入 1；如欲結束，請輸入 0: ") == "0":
+        continue_bool = False
+    else:
+        continue_bool = True
+
+print('\n程式結束')
