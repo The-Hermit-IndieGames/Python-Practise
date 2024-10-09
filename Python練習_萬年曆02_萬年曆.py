@@ -1,6 +1,7 @@
-﻿# 宣告: 周幾?(n為一年的第一天)、月、日
+﻿# 宣告
 now_week = 0
-week = ["n","n+1","n+2","n+3","n+4","n+5","n+6"]
+week_add = 0
+week = ["周一","週二","週三","周四","週五","週六","週日"]
 mon = 1
 big_mon = [1,3,5,7,8,10,12]
 day = 1
@@ -38,7 +39,7 @@ def is_leap_year(year):
 # 函式-輸出日期並每周對齊
 def print_day():
     global day, now_week
-    print(f"{day:>6}",end="")
+    print(f"{day:>7}",end="")
     if now_week == 6:
         print()
         now_week = 0
@@ -54,20 +55,24 @@ year = get_int_input("\n請輸西元年份(整數): ")
 
 # 判斷
 if is_leap_year(year):
-    print(f"{year} 年是閏年。\n")
+    print(f"{year} 年是閏年。")
 else:
-    print(f"{year} 年不是閏年。\n")
+    print(f"{year} 年不是閏年。")
 
+# 周次修正值
+week_add = ((year-1) + (year-1)//4 - (year-1)//100 + (year-1)//400) % 7
+print(f"本年度 1/1 為{week[week_add]}")
+now_week = week_add
 
-print(f"\n  {year:6d} 年-年曆 (請依據 1/1 星期幾自行對齊)\n")
+print(f"\n     ========== {year:6d} 年-年曆 ==========")
 # 第一層-月
 while mon <= 12:
     print(f"{" ":20s}{mon:<3d}月")
 
     # 對齊: 周幾
-    print(end=" ")
+    print()
     for i in range(7):
-        print(f"{week[i]:>5s}",end=" ")
+        print(f"{week[i]:>4s}",end=" ")
     else:
         print("")
     
@@ -82,7 +87,7 @@ while mon <= 12:
         max_day = 30
     
     # 周次對齊
-    print(" "*(6*now_week),end="")
+    print(" "*(7*now_week),end="")
 
     # 第二層-日
     while day <= max_day:
