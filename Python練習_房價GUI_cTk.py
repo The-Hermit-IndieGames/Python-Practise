@@ -9,7 +9,38 @@ import customtkinter
 window = customtkinter.CTk()    # 初始化 customtkinter 視窗
 window.title("Tkinter")
 window.geometry("600x720")
-window.configure(bg="#FFFFFF")
+
+# 設置外觀模式 (可選 "System", "Dark", "Light")
+customtkinter.set_appearance_mode("System")  # 跟隨系統設置的深色/淺色模式
+
+appearance_mode = 0
+
+# 更新外觀模式
+def update_appearance_mode():
+    global appearance_mode
+    appearance_mode += 1
+    if(appearance_mode == 1) :
+        customtkinter.set_appearance_mode("Light")
+        appearance_btn.configure(text="淺色模式")
+    elif(appearance_mode == 2) :
+        customtkinter.set_appearance_mode("Dark")
+        appearance_btn.configure(text="深色模式")
+    else :
+        appearance_mode = 0
+        customtkinter.set_appearance_mode("System")
+        appearance_btn.configure(text="系統預設")
+
+
+# 外觀模式按鈕
+appearance_btn = customtkinter.CTkButton(
+    master=window,
+    height=25,
+    width=60, 
+    text="系統預設",
+    font=("Microsoft JhengHei", 14, "bold"),
+    command=update_appearance_mode
+    )
+appearance_btn.place(x=500, y=5)
 
 
 radio_var_price = IntVar()
@@ -26,12 +57,11 @@ Title_1 = customtkinter.CTkLabel(
     text="欲統計分析之交易資料條件範圍",
     font=("Microsoft JhengHei", 20, "bold"),
     anchor="w",  # 左對齊
-    text_color="#000000",
     height=40,
     width=300,
     corner_radius=0,
-    bg_color="#FFFFFF",
-    fg_color="#FFFFFF",
+    bg_color="transparent",
+    fg_color="transparent",
 )
 Title_1.place(x=10, y=0)
 
@@ -45,8 +75,8 @@ Title_1_info = customtkinter.CTkLabel(
     height=30,
     width=300,
     corner_radius=0,
-    bg_color="#FFFFFF",
-    fg_color="#FFFFFF",
+    bg_color="transparent",
+    fg_color="transparent",
 )
 Title_1_info.place(x=10, y=30)
 
@@ -55,8 +85,10 @@ background_frame_1 = customtkinter.CTkFrame(
     master=window,
     height=80,
     width=550,
-    bg_color="#FFFFFF",
-    fg_color="#c8c8c8"
+    # 使用自適應色彩
+    # bg_color="transparent",    
+    # fg_color="#c8c8c8",
+    # text_color="#000000",
 )
 background_frame_1.place(x=20, y=60)
 
@@ -65,13 +97,10 @@ Class_1_optionMenu_1 = customtkinter.CTkOptionMenu(
     master=background_frame_1,
     values=["選項1", "選項2", "選項3"],
     font=("undefined", 14),
-    text_color="#000000",
     hover=True,
     height=50,
     width=60,
     corner_radius=8,
-    bg_color="transparent",
-    fg_color="#F0F0F0",
 )
 Class_1_optionMenu_1.place(x=10, y=15)
 
@@ -80,13 +109,10 @@ Class_1_optionMenu_2 = customtkinter.CTkOptionMenu(
     master=background_frame_1,
     values=["選項1", "選項2", "選項3"],
     font=("undefined", 14),
-    text_color="#000000",
     hover=True,
     height=50,
     width=95,
     corner_radius=8,
-    bg_color="transparent",
-    fg_color="#F0F0F0",
 )
 Class_1_optionMenu_2.place(x=120, y=15)
 
@@ -94,10 +120,6 @@ Class_1_optionMenu_2.place(x=120, y=15)
 Class_1_checkbox_1 = customtkinter.CTkCheckBox(
     master=background_frame_1,
     text="房屋",
-    text_color="#000000",
-    border_color="#000000",
-    fg_color="#808080",
-    hover_color="#808080",
     corner_radius=4,
     border_width=2,
     height=30,
@@ -109,10 +131,6 @@ Class_1_checkbox_1.place(x=280, y=10)
 Class_1_checkbox_2 = customtkinter.CTkCheckBox(
     master=background_frame_1,
     text="土地",
-    text_color="#000000",
-    border_color="#000000",
-    fg_color="#808080",
-    hover_color="#808080",
     corner_radius=4,
     border_width=2,
     height=30,
@@ -124,10 +142,6 @@ Class_1_checkbox_2.place(x=280, y=40)
 Class_1_checkbox_3 = customtkinter.CTkCheckBox(
     master=background_frame_1,
     text="建物",
-    text_color="#000000",
-    border_color="#000000",
-    fg_color="#808080",
-    hover_color="#808080",
     corner_radius=4,
     border_width=2,
     height=30,
@@ -139,10 +153,6 @@ Class_1_checkbox_3.place(x=350, y=10)
 Class_1_checkbox_4 = customtkinter.CTkCheckBox(
     master=background_frame_1,
     text="車位",
-    text_color="#000000",
-    border_color="#000000",
-    fg_color="#808080",
-    hover_color="#808080",
     corner_radius=4,
     border_width=2,
     height=30,
@@ -154,16 +164,11 @@ Class_1_checkbox_4.place(x=350, y=40)
 Class_1_entry = customtkinter.CTkEntry(
     master=background_frame_1,
     placeholder_text="門牌/社區名稱",
-    placeholder_text_color="#454545",
     font=("Microsoft JhengHei", 14),
-    text_color="#000000",
     height=50,
     width=120,
     border_width=2,
     corner_radius=6,
-    border_color="#000000",
-    bg_color="transparent",
-    fg_color="#F0F0F0",
 )
 Class_1_entry.place(x=420, y=15)
 
@@ -173,8 +178,6 @@ background_frame_2 = customtkinter.CTkFrame(
     master=window,
     height=80,
     width=550,
-    bg_color="#FFFFFF",
-    fg_color="#c8c8c8"
 )
 background_frame_2.place(x=20, y=160)
 
@@ -182,7 +185,7 @@ background_frame_2.place(x=20, y=160)
 Class_2_title = customtkinter.CTkLabel(
     master=background_frame_2,
     text="交易期間:",
-    font=("Microsoft JhengHei", 16),
+    font=("Microsoft JhengHei", 16, "bold"),
     text_color="#000000",
     height=40,
     width=80,
@@ -328,8 +331,6 @@ background_frame_3 = customtkinter.CTkFrame(
     master=window,
     height=60,
     width=360,
-    bg_color="#FFFFFF",
-    fg_color="#c8c8c8"
 )
 background_frame_3.place(x=20, y=250)
 
@@ -337,7 +338,7 @@ background_frame_3.place(x=20, y=250)
 Class_3_title = customtkinter.CTkLabel(
     master=background_frame_3,
     text="單價:",
-    font=("Microsoft JhengHei", 16),
+    font=("Microsoft JhengHei", 16, "bold"),
     text_color="#000000",
     height=40,
     width=60,
@@ -430,8 +431,6 @@ background_frame_4 = customtkinter.CTkFrame(
     master=window,
     height=60,
     width=360,
-    bg_color="#FFFFFF",
-    fg_color="#c8c8c8"
 )
 background_frame_4.place(x=20, y=320)
 
@@ -439,7 +438,7 @@ background_frame_4.place(x=20, y=320)
 Class_4_title = customtkinter.CTkLabel(
     master=background_frame_4,
     text="面積:",
-    font=("Microsoft JhengHei", 16),
+    font=("Microsoft JhengHei", 16, "bold"),
     text_color="#000000",
     height=40,
     width=60,
@@ -532,8 +531,6 @@ background_frame_5 = customtkinter.CTkFrame(
     master=window,
     height=60,
     width=180,
-    bg_color="#FFFFFF",
-    fg_color="#c8c8c8"
 )
 background_frame_5.place(x=390, y=250)
 
@@ -541,7 +538,7 @@ background_frame_5.place(x=390, y=250)
 Class_5_title = customtkinter.CTkLabel(
     master=background_frame_5,
     text="屋齡:",
-    font=("Microsoft JhengHei", 16),
+    font=("Microsoft JhengHei", 16, "bold"),
     text_color="#000000",
     height=40,
     width=60,
@@ -573,12 +570,9 @@ Title_2 = customtkinter.CTkLabel(
     text="目標購置之房屋資訊",
     font=("Microsoft JhengHei", 20, "bold"),
     anchor="w",
-    text_color="#000000",
     height=40,
     width=300,
     corner_radius=0,
-    bg_color="#FFFFFF",
-    fg_color="#FFFFFF",
     )
 Title_2.place(x=10, y=390)
 
@@ -588,8 +582,6 @@ background_frame_6 = customtkinter.CTkFrame(
     master=window,
     height=60,
     width=350,
-    bg_color="#FFFFFF",
-    fg_color="#c8c8c8"
 )
 background_frame_6.place(x=20, y=430)
 
@@ -597,7 +589,7 @@ background_frame_6.place(x=20, y=430)
 Class_6_title = customtkinter.CTkLabel(
     master=background_frame_6,
     text="時間:",
-    font=("Microsoft JhengHei", 16),
+    font=("Microsoft JhengHei", 16, "bold"),
     text_color="#000000",
     height=40,
     width=60,
@@ -656,8 +648,6 @@ background_frame_7 = customtkinter.CTkFrame(
     master=window,
     height=60,
     width=350,
-    bg_color="#FFFFFF",
-    fg_color="#c8c8c8"
 )
 background_frame_7.place(x=20, y=500)
 
@@ -665,7 +655,7 @@ background_frame_7.place(x=20, y=500)
 Class_7_title = customtkinter.CTkLabel(
     master=background_frame_7,
     text="面積:",
-    font=("Microsoft JhengHei", 16),
+    font=("Microsoft JhengHei", 16, "bold"),
     text_color="#000000",
     height=40,
     width=60,
@@ -739,7 +729,7 @@ Output_button = customtkinter.CTkButton(
     border_width=2,
     corner_radius=6,
     border_color="#000000",
-    bg_color="#FFFFFF",
+    bg_color="transparent",
     fg_color="#75f6ff",
     )
 Output_button.place(x=230, y=580)
@@ -753,8 +743,8 @@ Output_label = customtkinter.CTkLabel(
     height=70,
     width=580,
     corner_radius=0,
-    bg_color="#FFFFFF",
-    fg_color="#EEEEEE",
+    bg_color="transparent",
+    fg_color="transparent",
     )
 Output_label.place(x=10, y=640)
 

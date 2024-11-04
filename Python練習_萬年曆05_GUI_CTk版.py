@@ -36,7 +36,7 @@ def is_leap_year_string(year):
     if is_leap_year(year):
         return "是"
     else:
-        return "不是"
+        return "非"
 
 
 # 周次修正值
@@ -48,7 +48,7 @@ def week_add(year):
 # 建立年曆 (列表: [ [1,2,3,...] , [*,*,1,2,3,...] , ......] )
 def creat_year_day_list(year):
     global big_mon, year_day_list
-    year_day_list.clear
+    year_day_list = []
 
     max_day = 0
     now_week = week_add(year)
@@ -96,6 +96,7 @@ def creat_year_day_list(year):
 # 按周印出年曆
 def print_year_days():
     global year_day_list, year_day_list_strings
+    year_day_list_strings = []
 
     for mon_list in year_day_list:
         month_str = ""
@@ -113,9 +114,12 @@ def print_year_days():
         print("\nprint_year_days END")
 
 
+""" 
+# 偵錯用
 creat_year_day_list(2024)
 print_year_days()
-print(year_day_list_strings[9])
+print(year_day_list_strings[9]) 
+"""
 
 
 # 視窗部分 =============================================================================================================== 視窗部分 #
@@ -130,16 +134,14 @@ def submit():
     user_input = entry.get()
     if user_input.isdigit():
         input_year = int(user_input)
-        output_var.set(f"查詢{input_year}年")
+        print(f"查詢{input_year}年")
+        creat_year_day_list(input_year)
+        print_year_days()
         show_mon = 1
         window_update()
     else:
         messagebox.showerror("錯誤", "請輸入有效的年分")
 
-# 清除按鈕的事件處理函數
-def clear():
-    entry.delete(0, customtkinter.END)
-    output_var.set("")
 
 # 換頁按鈕 (下一頁) 的事件處理函數
 def next_page():
@@ -147,7 +149,7 @@ def next_page():
     show_mon += 1
     if show_mon >= 13:
         show_mon = 12
-    output_var.set(f"目前顯示{show_mon:3d}月")
+    print(f"目前顯示{show_mon:3d}月")
     window_update()
 
 # 換頁按鈕 (上一頁) 的事件處理函數
@@ -156,13 +158,14 @@ def previous_page():
     show_mon -= 1
     if show_mon <= 0:
         show_mon = 1
-    output_var.set(f"目前顯示{show_mon:3d}月")
+    print(f"目前顯示{show_mon:3d}月")
     window_update()
 
 # 主視窗刷新
 def window_update():
-    global input_year, show_mon
-    is_leap_year_var.set(f"該年分{is_leap_year_string(input_year)}閏年")
+    global input_year, show_mon, input_year
+
+    is_leap_year_var.set(f"{input_year}年{is_leap_year_string(input_year)}閏年")
     output_string = (f"{input_year:4d}年{show_mon:3d}月\n\n{week}\n\n{year_day_list_strings[show_mon-1]}")
     update_main_output(output_string)
 
@@ -180,47 +183,138 @@ window = customtkinter.CTk()  # 使用 CTk 來初始化 customtkinter 視窗
 window.title("萬年曆")
 window.geometry("600x600")
 
+
+# 設置外觀模式 (可選 "System", "Dark", "Light")
+customtkinter.set_appearance_mode("System")  # 跟隨系統設置的深色/淺色模式
+
+appearance_mode = 0
+
+# 更新外觀模式
+def update_appearance_mode():
+    global appearance_mode
+    appearance_mode += 1
+    if(appearance_mode == 1) :
+        customtkinter.set_appearance_mode("Light")
+        appearance_btn.configure(text="淺色模式")
+    elif(appearance_mode == 2) :
+        customtkinter.set_appearance_mode("Dark")
+        appearance_btn.configure(text="深色模式")
+    else :
+        appearance_mode = 0
+        customtkinter.set_appearance_mode("System")
+        appearance_btn.configure(text="系統預設")
+
+
+# 外觀模式按鈕
+appearance_btn = customtkinter.CTkButton(
+    master=window,
+    height=30,
+    width=60, 
+    text="系統預設",
+    font=("Microsoft JhengHei", 16, "bold"),
+    command=update_appearance_mode
+    )
+appearance_btn.pack(pady=5)
+
+
+
+# 輸入群組
+background_frame_1 = customtkinter.CTkFrame(
+    master=window,
+    height=60,
+    width=550,
+)
+background_frame_1.pack(pady=10)
+
+
 # 輸入欄-年
-entry_label = customtkinter.CTkLabel(window, text="請輸入要查詢的西元年份：")
-entry_label.pack(pady=5)
+entry_label = customtkinter.CTkLabel(
+    master=background_frame_1,
+    height=30,
+    width=160,
+    text="請輸入要查詢的西元年份：",
+    font=("Microsoft JhengHei", 16, "bold")
+    )
+entry_label.place(x=10, y=15)
+
 
 # 輸入欄 vcmd 註冊為檢查函數，驗證每次鍵入的字元是否有效
 vcmd = (window.register(validate_int), "%S")
-entry = customtkinter.CTkEntry(window, validate="key", validatecommand=vcmd)
-entry.pack(pady=5)
+entry = customtkinter.CTkEntry(
+    master=background_frame_1,
+    height=30,
+    width=120,
+    validate="key", 
+    validatecommand=vcmd)
+entry.place(x=210, y=15)
+
 
 # 提交按鈕
-submit_btn = customtkinter.CTkButton(window, text="提交", command=submit)
-submit_btn.pack(pady=5)
+submit_btn = customtkinter.CTkButton(
+    master=background_frame_1,
+    height=30,
+    width=60, 
+    text="提交",
+    font=("Microsoft JhengHei", 16, "bold"),
+    command=submit
+    )
+submit_btn.place(x=340, y=15)
 
 # 輸出欄-閏年判斷
 is_leap_year_var = customtkinter.StringVar()
-is_leap_year_entry = customtkinter.CTkEntry(window, textvariable=is_leap_year_var, state="readonly")
-is_leap_year_entry.pack(pady=5)
-is_leap_year_var.set("該年分是否為閏年")
+is_leap_year_entry = customtkinter.CTkEntry(
+    master=background_frame_1,
+    height=30,
+    width=120, 
+    font=("Microsoft JhengHei", 16, "bold"),
+    textvariable=is_leap_year_var, 
+    state="readonly"
+    )
+is_leap_year_entry.place(x=410, y=15)
+is_leap_year_var.set("是否為閏年?")
+
+
+# 輸出群組
+background_main = customtkinter.CTkFrame(
+    master=window,
+    height=440,
+    width=550,
+)
+background_main.pack(pady=10)
+
 
 # 輸出欄-單月曆
-main_output_text = customtkinter.CTkTextbox(window, height=5, width=40, state="normal")
-main_output_text.pack(side="top", fill=customtkinter.BOTH, expand=True, padx=30, pady=20)
+main_output_text = customtkinter.CTkTextbox(
+    master=background_main,
+    height=350,
+    width=500, 
+    state="normal"
+    )
+main_output_text.place(x=25, y=25)
 main_output_text.insert(customtkinter.END, "此處用於輸出月曆")
 main_output_text.configure(state="disabled",font=("Courier New", 20))
 
 # 換頁按鈕 (上一頁)
-previous_btn = customtkinter.CTkButton(window, text="上一頁", command=previous_page)
-previous_btn.pack(side=customtkinter.LEFT, padx=10, pady=0)
+previous_btn = customtkinter.CTkButton(
+    master=background_main,
+    height=30,
+    width=100,  
+    text="上一頁", 
+    font=("Microsoft JhengHei", 16, "bold"),
+    command=previous_page
+    )
+previous_btn.place(x=25, y=390)
 
 # 換頁按鈕 (下一頁)
-next_btn = customtkinter.CTkButton(window, text="下一頁", command=next_page)
-next_btn.pack(side=customtkinter.RIGHT, padx=10, pady=0)
-
-# 輸出欄
-output_var = customtkinter.StringVar()
-output_entry = customtkinter.CTkEntry(window, textvariable=output_var, state="readonly")
-output_entry.pack(pady=20)
-
-# 清除按鈕
-clear_btn = customtkinter.CTkButton(window, text="清除/重新輸入", command=clear)
-clear_btn.pack(pady=5)
+next_btn = customtkinter.CTkButton(
+    master=background_main,
+    height=30,
+    width=100,  
+    text="下一頁", 
+    font=("Microsoft JhengHei", 16, "bold"),
+    command=next_page
+    )
+next_btn.place(x=425, y=390)
 
 # 啟動視窗循環
 window.mainloop()
