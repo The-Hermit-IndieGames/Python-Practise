@@ -19,18 +19,22 @@ if section:
     earthquakes = []
     for row in rows:
         cols = row.find_all("td")
-        date = cols[2].text.strip()  # 時間
+        time = cols[2].text.strip()  # 時間
         magnitude = float(cols[3].text.strip())  # 規模
-        intensity = cols[3].text.strip()  # 震度
+        intensity = cols[1].text.strip()  # 震度
         depth = cols[4].text.strip()  # 深度
         location = cols[5].text.strip()  # 位置
 
-        earthquakes.append((date, magnitude, location))
+        earthquakes.append((time, magnitude,intensity,depth, location))
         if len(earthquakes) >= 5:  # 取前5筆
             break
 
     # 輸出結果
     for eq in earthquakes:
-        print(f"{eq[0]} | 規模: {eq[1]} | 震度: {eq[2]} | 深度: {eq[2]} | 位置: {eq[2]}")
+        print(f"{eq[0]} | 規模: {eq[1]} | 震度: {eq[2]} | 深度: {eq[3]:4s} | 位置: {eq[4]}")
 else:
     print("找不到『規模大於5.0地震』區塊")
+
+
+# 卡結束用
+input("輸入任意值結束")
